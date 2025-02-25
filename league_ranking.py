@@ -13,6 +13,30 @@ def process_results(input_lines):
     return calculate_ranking(scores)
 
 
+def get_match_details(match_line):
+    try:
+        parts = match_line.rsplit(", ", 1)
+        team1, score1 = parts[0].rsplit(" ", 1)
+        team2, score2 = parts[1].rsplit(" ", 1)
+        return team1, int(score1), team2, int(score2)
+    except ValueError:
+        raise ValueError(f"Invalid match format: {match_line}")
+
+
+def calculate_ranking(scores):
+    sorted_teams = sorted(scores.items(), key=lambda x: (-x[1], x[0]))
+    output = []
+    
+    rank = 0
+    prev_score = None
+    for i, (team, score) in enumerate(sorted_teams, start=1):
+        rank = i if score != prev_score else rank
+        output.append(f"{rank}. {team}, {score} pt{'s' if score != 1 else ''}")
+        prev_score = score
+    
+    return "\n".join(output)
+
+
 def main():
     try:
         input_lines = open(sys.argv[1]).read().strip().split("\n") if len(sys.argv) > 1 else sys.stdin.read().strip().split("\n")

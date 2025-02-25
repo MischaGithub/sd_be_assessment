@@ -14,6 +14,7 @@ Teams with more points are ranked higher. If teams have the same points, they ar
 
 ### Steps:
 1. Download or clone this project.
+2. Open a terminal and go to the project folder.
 
 Run the script in two ways:
 
@@ -23,11 +24,11 @@ Run the script in two ways:
    ```
    Example `input.txt`:
    ```
-   Liverpool 3, Madrid 3
-   Aston Villa 1, Man Utd 0
-   Liverpool 1, Man Utd 1
-   Aston Villa 3, Madrid 1
-   Liverpool 4, Man City 0
+   Lions 3, Snakes 3
+   Tarantulas 1, FC Awesome 0
+   Lions 1, FC Awesome 1
+   Tarantulas 3, Snakes 1
+   Lions 4, Grouches 0
    ```
 
 2. **Manually enter data:**
@@ -45,13 +46,14 @@ python -m unittest test_league_ranking.py
 ## Expected Output
 Example:
 ```
-1. Liverpool, 7 pts
-2. Aston Villa, 6 pts
-3. Madrid, 4 pts
-4. Man Utd, 1 pt
-5. Man City, 0 pts
+1. Tarantulas, 6 pts
+2. Lions, 5 pts
+3. FC Awesome, 1 pt
+3. Snakes, 1 pt
+5. Grouches, 0 pts
 ```
 
 ## Notes
 - This is a simple project to learn how to handle input, sorting, and ranking.
 - Feel free to improve it!
+

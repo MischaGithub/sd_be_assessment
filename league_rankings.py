@@ -5,32 +5,46 @@ def process_results(input_lines):
     scores = defaultdict(int)
     
     for line in input_lines:
-        team1, score1, team2, score2 = get_match_details(line)
+        team1, score1, team2, score2 = extract_match_details(line)
         
-        scores[team1] += 3 if score1 > score2 else 1 if score1 == score2 else 0
-        scores[team2] += 3 if score2 > score1 else 1 if score1 == score2 else 0
+        # Ensure both teams are in the scores dictionary, even if they have 0 points
+        scores[team1] += 0
+        scores[team2] += 0
+        
+        if score1 > score2:
+            scores[team1] += 3
+        elif score1 < score2:
+            scores[team2] += 3
+        else:
+            scores[team1] += 1
+            scores[team2] += 1
     
-    return calculate_ranking(scores)
+    return generate_ranking(scores)
 
 
-def get_match_details(match_line):
+def extract_match_details(match_line):
     try:
-        parts = match_line.rsplit(", ", 1)
+        parts = match_line.strip().split(", ")
+        if len(parts) != 2:
+            raise ValueError(f"Invalid match format: {match_line}")
+        
         team1, score1 = parts[0].rsplit(" ", 1)
         team2, score2 = parts[1].rsplit(" ", 1)
+        
         return team1, int(score1), team2, int(score2)
-    except ValueError:
-        raise ValueError(f"Invalid match format: {match_line}")
+    except ValueError as e:
+        raise ValueError(f"Invalid match format: {match_line}") from e
+    
 
-
-def calculate_ranking(scores):
+def generate_ranking(scores):
     sorted_teams = sorted(scores.items(), key=lambda x: (-x[1], x[0]))
     output = []
     
     rank = 0
     prev_score = None
     for i, (team, score) in enumerate(sorted_teams, start=1):
-        rank = i if score != prev_score else rank
+        if score != prev_score:
+            rank = i
         output.append(f"{rank}. {team}, {score} pt{'s' if score != 1 else ''}")
         prev_score = score
     

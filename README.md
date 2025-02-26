@@ -40,7 +40,7 @@ Run the script in two ways:
 ## Running Tests
 To check if everything works, run:
 ```sh
-python -m unittest test_league_ranking.py
+python -m unittest test_league_rankings.py
 ```
 
 ## Expected Output
@@ -53,7 +53,4 @@ Example:
 5. Grouches, 0 pts
 ```
 
-## Notes
-- This is a simple project to learn how to handle input, sorting, and ranking.
-- Feel free to improve it!
 

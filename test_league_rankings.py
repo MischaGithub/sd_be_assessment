@@ -1,5 +1,5 @@
 import unittest
-from league_rankings import process_results, extract_match_details
+from league_rankings import process_results, get_match_details
 
 class TestLeagueRanking(unittest.TestCase):
     def test_basic_ranking(self):
@@ -34,7 +34,7 @@ class TestLeagueRanking(unittest.TestCase):
 
     def test_invalid_input(self):
         with self.assertRaises(ValueError):
-            extract_match_details("Invalid Data Here")
+            get_match_details("Invalid Data Here")
     
     def test_empty_input(self):
         self.assertEqual(process_results([]), "")

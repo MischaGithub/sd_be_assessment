@@ -23,7 +23,7 @@ def calculate_ranking_results(input_lines):
             scores[team2] += 1
 
     # Generate and return the final ranking by sorting teams based on their scores.
-    return calculate_ranking(scores)
+    return create_league_ranking(scores)
 
 
 def get_match_details(match_line):
@@ -48,28 +48,39 @@ def get_match_details(match_line):
         raise ValueError(f"Invalid match format: {match_line}") from e
     
 
-def calculate_ranking(scores):
+def create_league_ranking(scores):
+    # Sort teams by score (descending) and name (ascending).
     sorted_teams = sorted(scores.items(), key=lambda x: (-x[1], x[0]))
     output = []
     
     rank = 0
     prev_score = None
+    # Assign ranks, handling ties (teams with the same score get the same rank).
     for i, (team, score) in enumerate(sorted_teams, start=1):
         if score != prev_score:
-            rank = i
+            rank = i    # Update rank if the score changes.
+
+        # Format the ranking line (e.g., "1. TeamA, 3 pts").
         output.append(f"{rank}. {team}, {score} pt{'s' if score != 1 else ''}")
         prev_score = score
-    
+
+    # Join the formatted lines into a single string with newlines.
     return "\n".join(output)
 
 
 def main():
     try:
+        # Read input from a file (if provided) or stdin, splitting into lines.
         input_lines = open(sys.argv[1]).read().strip().split("\n") if len(sys.argv) > 1 else sys.stdin.read().strip().split("\n")
+        
+        # Calculate and print the ranking results.
         print(calculate_ranking_results(input_lines))
+        
     except (IndexError, FileNotFoundError):
+        # Handle missing file or invalid input source.
         print("Error: Please provide a valid input file or enter input through stdin.")
     except Exception as e:
+        # Catch and display any unexpected errors.
         print(f"Unexpected error: {e}")
 
 if __name__ == "__main__":

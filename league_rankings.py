@@ -1,16 +1,19 @@
 import sys
 from collections import defaultdict
 
-def process_results(input_lines):
+def calculate_ranking_results(input_lines):
+    # Use defaultdict to track team scores, initializing new teams with 0 points.
     scores = defaultdict(int)
-    
+
+    # Process each match line to extract team names and scores.
     for line in input_lines:
         team1, score1, team2, score2 = get_match_details(line)
-        
-        # Ensure both teams are in the scores dictionary, even if they have 0 points
+
+        # Ensure both teams are in the scores dictionary.
         scores[team1] += 0
-        scores[team2] += 0
-        
+        scores[team2] += 0 
+
+        # Update scores: 3 points for a win, 1 point each for a draw.
         if score1 > score2:
             scores[team1] += 3
         elif score1 < score2:
@@ -18,35 +21,34 @@ def process_results(input_lines):
         else:
             scores[team1] += 1
             scores[team2] += 1
-    
-    return generate_ranking(scores)
+
+    # Generate and return the final ranking by sorting teams based on their scores.
+    return calculate_ranking(scores)
 
 
 def get_match_details(match_line):
-    # Remove any leading/trailing whitespace and split the line by ", " to separate team-score pairs
+    # Split the match line into two parts: team1 score1, team2 score2.
     try:
         parts = match_line.strip().split(", ")
 
-        # Check if the line contains exactly two parts (team1 score1, team2 score2)
+        # Validate that the line contains exactly two parts.
         if len(parts) != 2:
             raise ValueError(f"Invalid match format: {match_line}")
-
-        # Split the first part (team1 score1) into team name and score
         
         team1, score1 = parts[0].rsplit(" ", 1)  # rsplit ensures splitting from the right
 
-        # Split the second part (team2 score2) into team name and score
+        # Split each part into team name and score.
         team2, score2 = parts[1].rsplit(" ", 1)
 
-        # Return the extracted details, converting scores from strings to integers
+        # Return team names and scores as integers.
         return team1, int(score1), team2, int(score2)
     
     except ValueError as e:
-        # If any error occurs (e.g., invalid format or score conversion), raise a descriptive error
+        # Raise an error if the format is invalid or scores can't be converted.
         raise ValueError(f"Invalid match format: {match_line}") from e
     
 
-def generate_ranking(scores):
+def calculate_ranking(scores):
     sorted_teams = sorted(scores.items(), key=lambda x: (-x[1], x[0]))
     output = []
     
@@ -64,7 +66,7 @@ def generate_ranking(scores):
 def main():
     try:
         input_lines = open(sys.argv[1]).read().strip().split("\n") if len(sys.argv) > 1 else sys.stdin.read().strip().split("\n")
-        print(process_results(input_lines))
+        print(calculate_ranking_results(input_lines))
     except (IndexError, FileNotFoundError):
         print("Error: Please provide a valid input file or enter input through stdin.")
     except Exception as e:

@@ -1,5 +1,5 @@
 import unittest
-from league_rankings import process_results, get_match_details
+from league_rankings import calculate_ranking_results, get_match_details
 
 class TestLeagueRanking(unittest.TestCase):
     def test_basic_ranking(self):
@@ -17,7 +17,7 @@ class TestLeagueRanking(unittest.TestCase):
             "3. Snakes, 1 pt\n"
             "5. Grouches, 0 pts"
         )
-        self.assertEqual(process_results(matches), expected_output)
+        self.assertEqual(calculate_ranking_results(matches), expected_output)
 
     def test_tiebreaker_alphabetical(self):
         matches = [
@@ -30,14 +30,14 @@ class TestLeagueRanking(unittest.TestCase):
             "1. TeamC, 1 pt\n"
             "1. TeamD, 1 pt"
         )
-        self.assertEqual(process_results(matches), expected_output)
+        self.assertEqual(calculate_ranking_results(matches), expected_output)
 
     def test_invalid_input(self):
         with self.assertRaises(ValueError):
             get_match_details("Invalid Data Here")
     
     def test_empty_input(self):
-        self.assertEqual(process_results([]), "")
+        self.assertEqual(calculate_ranking_results([]), "")
 
 if __name__ == "__main__":
     unittest.main()
